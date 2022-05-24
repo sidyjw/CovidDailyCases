@@ -1,4 +1,6 @@
+using Application.Core;
 using Infrastructure.Persistence;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +32,8 @@ namespace API
 
             services.AddControllers();
             services.AddDbContext<DailyCasesReportContext>(opt => opt.UseSqlite("Data source=dailyCasesReport.db"));
+            services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddScoped<IDailyCasesRepository, DailyCasesRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
