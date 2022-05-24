@@ -13,10 +13,7 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
-            CreateMap<DailyCasesReport, AvailableDatesDTO>()
-                .ForMember(
-                    dest => dest.Date,
-                    opt => opt.MapFrom(src => src.Date));
+            
         }
     }
 }

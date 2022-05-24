@@ -1,4 +1,6 @@
-﻿using Application.DailyCases;
+﻿using Application.Contracts;
+using Application.DailyCases;
+using Application.DailyCases.Queries;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
@@ -22,13 +24,26 @@ namespace Infrastructure.Repositories
             _context = context;
             _mapper = mapper;
         }
-        public async Task<List<AvailableDatesDTO>> AvailableDatesAsync()
+        public async Task<List<DateTime>> AvailableDatesAsync()
         {
             return await _context.DailyCasesReports
-                .Distinct()
                 .AsNoTracking()
-                .ProjectTo<AvailableDatesDTO>(_mapper.ConfigurationProvider)
+                .Select(x => x.Date)
+                .Distinct()
+                .OrderByDescending(x => x.Date)
                 .ToListAsync();
+        }
+
+        public async Task<List<AllCasesByDayDTO>> GetAllCasesByDay(DateTime date)
+        {
+            var query = from cases in await _context.Set<DailyCasesReport>()
+                        .AsNoTracking()
+                        .Where(cases => cases.Date == date )
+                        .ToListAsync()
+                        group cases by cases.Location
+                        into casesGroup
+                        select new AllCasesByDayDTO { Location = casesGroup.Key, Variant = casesGroup.Select(c => c.Variant).Distinct().ToList() };
+            return query.ToList();
         }
     }
 }
