@@ -1,4 +1,6 @@
-﻿namespace Domain
+﻿using System;
+
+namespace Domain
 {
     public class DailyCasesReport
     {
@@ -10,4 +12,5 @@
         public double PercSequences { get; set; }
         public int NumSequencesTotal { get; set; }
     }
+    
 }
