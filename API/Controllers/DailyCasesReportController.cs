@@ -1,4 +1,7 @@
-﻿using Application.DailyCases.Queries;
+﻿using Application.Contracts;
+using Application.DailyCases;
+using Application.DailyCases.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,9 +14,11 @@ namespace API.Controllers
     [ApiController]
     public class DailyCasesReportController : ControllerBase
     {
-        public DailyCasesReportController()
+        private readonly IMediator _mediator;
+
+        public DailyCasesReportController(IMediator mediator)
         {
-           
+            _mediator = mediator;
         }
         
         [HttpGet("/")]
@@ -24,10 +29,21 @@ namespace API.Controllers
         }
 
         [HttpGet("/dates")]
-        [ProducesResponseType(typeof(List<AvailableDatesDTO>), StatusCodes.Status200OK)]
-        public async Task<List<AvailableDatesDTO>> AvailableDates()
+        [ProducesResponseType(typeof(List<DateTime>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<DateTime>>> AvailableDates()
         {
-            throw new NotImplementedException();
+            var result = await _mediator.Send(new Dates.Query());
+            
+            return Ok(result);
+        }
+
+        [HttpGet("/cases/{date}/count")]
+        [ProducesResponseType(typeof(List<AllCasesByDayDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllCasesByDate(DateTime date)
+        {
+            var result = await _mediator.Send(new GetAllCasesByDate.Query { Date = date });
+            return Ok(result);
         }
     }
 }
