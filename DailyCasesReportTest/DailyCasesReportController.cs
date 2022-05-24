@@ -1,5 +1,8 @@
 ﻿using API.Controllers;
+using Application.Contracts;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using System;
 using Xunit;
 
@@ -11,7 +14,8 @@ namespace DailyCasesReportTest
         public void Get_Returns_StringMessage()
         {
             //Arrange
-            var controller = new DailyCasesReportController();
+            var mediatorMock = new Mock<IMediator>();
+            var controller = new DailyCasesReportController(mediatorMock.Object);
 
             //Act
             var actionResult = controller.Get();
