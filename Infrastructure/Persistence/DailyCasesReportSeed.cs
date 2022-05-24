@@ -15,34 +15,6 @@ namespace Infrastructure.Persistence
 {
     public static class DailyCasesReportSeed
     {
-        public static EntityTypeBuilder SeedCsv(this EntityTypeBuilder entityTypeBuilder)
-        {
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture);
-            using var reader = new StreamReader(GetCsvRelativePath());
-
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-            {
-                var records = csv.GetRecords<DailyCasesCsvConfig>();
-                var seedId = 1;
-                foreach (var record in records)
-                {
-                    entityTypeBuilder.HasData(new DailyCasesReport
-                    {
-                        Id = seedId,
-                        Location = record.Location,
-                        Date = record.Date,
-                        NumSequences = record.NumSequences,
-                        PercSequences = record.PercSequences,
-                        NumSequencesTotal = record.NumSequencesTotal,
-                        Variant = record.Variant
-                    }); ;
-                    seedId++;
-                }
-            }
-
-            return entityTypeBuilder;
-        }
-
         public static async Task SeedCsv(DailyCasesReportContext context)
         {
             if (!context.DailyCasesReports.Any())

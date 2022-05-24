@@ -1,4 +1,4 @@
-﻿using Application.DailyCases;
+﻿using Application.DailyCases.Queries;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
