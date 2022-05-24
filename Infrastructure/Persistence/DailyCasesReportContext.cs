@@ -15,11 +15,5 @@ namespace Infrastructure.Persistence
         public DailyCasesReportContext(DbContextOptions<DailyCasesReportContext> options) : base(options)
         {
         }
-/*
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<DailyCasesReport>().SeedCsv().HasKey(new[] {"Id"}); 
-        }*/
     }
 }
