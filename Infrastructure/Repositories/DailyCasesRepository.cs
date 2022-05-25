@@ -1,5 +1,5 @@
 ﻿using Application.Contracts;
-using Application.DailyCases.Queries;
+using Application.DailyCases.DTOs;
 using Domain;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;

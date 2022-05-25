@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Application.DailyCases.Queries
+namespace Application.DailyCases.DTOs
 {
     public class AllCasesAmountByDateDTO
     {

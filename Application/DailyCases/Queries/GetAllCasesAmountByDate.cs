@@ -1,8 +1,11 @@
 ﻿using Application.Contracts;
+using Application.Core;
+using Application.DailyCases.DTOs;
 using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,7 +13,7 @@ namespace Application.DailyCases.Queries
 {
     public class GetAllCasesAmountByDate
     {
-        public class Query : IRequest<List<AllCasesAmountByDateDTO>>
+        public class Query : IRequest<Result<List<AllCasesAmountByDateDTO>>>
         {
             public string Date { get; set; }
         }
@@ -41,7 +44,7 @@ namespace Application.DailyCases.Queries
             }
         }
 
-        public class Handler : IRequestHandler<Query, List<AllCasesAmountByDateDTO>>
+        public class Handler : IRequestHandler<Query, Result<List<AllCasesAmountByDateDTO>>>
         {
             private readonly IDailyCasesRepository _repository;
             private readonly IValidator<Query> _validator;
@@ -51,17 +54,18 @@ namespace Application.DailyCases.Queries
                 _repository = repository;
                 _validator = validator;
             }
-            public async Task<List<AllCasesAmountByDateDTO>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<AllCasesAmountByDateDTO>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var validationResult = await _validator.ValidateAsync(request);
-                
-                if (validationResult.IsValid)
-                {
-                    var datesIntervals = request.Date.Split('~');
-                    return await _repository.GetAllCasesAmountByDateAsync(DateTime.Parse(datesIntervals[0]), DateTime.Parse(datesIntervals[1]));
-                }
 
-               return new List<AllCasesAmountByDateDTO>();
+                if (!validationResult.IsValid)
+                {
+                    return Result<List<AllCasesAmountByDateDTO>>.Failure(validationResult.Errors.FirstOrDefault().ErrorMessage);
+                }
+                
+                var datesIntervals = request.Date.Split('~');
+                var result = await _repository.GetAllCasesAmountByDateAsync(DateTime.Parse(datesIntervals[0]), DateTime.Parse(datesIntervals[1]));
+                return Result<List<AllCasesAmountByDateDTO>>.Success(result);
             }
         }
     }

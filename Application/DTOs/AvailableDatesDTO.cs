@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Application.DailyCases.Queries
+namespace Application.DailyCases.DTOs
 {
     public class AvailableDatesDTO
     {

@@ -1,5 +1,4 @@
-﻿using Application.Contracts;
-using Application.DailyCases;
+﻿using Application.DailyCases.DTOs;
 using Application.DailyCases.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -30,11 +29,11 @@ namespace API.Controllers
 
         [HttpGet("/dates")]
         [ProducesResponseType(typeof(List<DateTime>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<DateTime>>> AvailableDates()
+        public async Task<IActionResult> AvailableDates()
         {
             var result = await _mediator.Send(new Dates.Query());
             
-            return Ok(result);
+            return Ok(result.Value);
         }
 
         [HttpGet("/cases/{date}/count")]
@@ -43,7 +42,10 @@ namespace API.Controllers
         public async Task<IActionResult> GetAllCasesByDate(DateTime date)
         {
             var result = await _mediator.Send(new GetAllCasesByDate.Query { Date = date });
-            return Ok(result);
+
+            if(!result.IsSuccess) return BadRequest(result.Error);
+
+            return Ok(result.Value);
         }
 
         [HttpGet("/cases/{date}/cumulative")]
@@ -51,8 +53,11 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllCasesAmountByDate(string date)
         {
-            var result = await _mediator.Send(new GetAllCasesAmountByDate.Query { Date = date}); 
-            return Ok(result);
+            var result = await _mediator.Send(new GetAllCasesAmountByDate.Query { Date = date});
+
+            if (!result.IsSuccess) return BadRequest(result.Error);
+
+            return Ok(result.Value);
         }
     }
 }

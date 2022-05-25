@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DailyCases.Queries
+namespace Application.DailyCases.DTOs
 {
     public class AllCasesByDayDTO
     {
