@@ -64,7 +64,20 @@ namespace Application.DailyCases.Queries
                 }
                 
                 var datesIntervals = request.Date.Split('~');
-                var result = await _repository.GetAllCasesAmountByDateAsync(DateTime.Parse(datesIntervals[0]), DateTime.Parse(datesIntervals[1]));
+                var query = await _repository.GetAllCasesAmountByDateAsync(DateTime.Parse(datesIntervals[0]), DateTime.Parse(datesIntervals[1]));
+
+                var result = query.GroupBy(c => c.Location)
+                            .Select(cases => new AllCasesAmountByDateDTO
+                            {
+                                Location = cases.Key,
+                                VariantItems = cases.GroupBy(c => c.Variant)
+                                                        .Select(v => new VariantItem
+                                                        {
+                                                            Name = v.Key,
+                                                            Amount = v.Sum(a => a.NumSequences).ToString()
+                                                        })
+                                                        .ToList()
+                            }).ToList();
                 return Result<List<AllCasesAmountByDateDTO>>.Success(result);
             }
         }

@@ -43,7 +43,14 @@ namespace Application.DailyCases.Queries
                     return Result<List<AllCasesByDayDTO>>.Failure(validationResult.Errors.FirstOrDefault().ErrorMessage);
                 }
                 
-                var result = await _repository.GetAllCasesByDayAsync(request.Date);
+                var query = await _repository.GetAllCasesByDayAsync(request.Date);
+
+                var result = query.GroupBy(cases => cases.Location)
+                                            .Select(@case =>  new AllCasesByDayDTO 
+                                                     { 
+                                                        Location = @case.Key, 
+                                                        Variant = @case.Select(c => c.Variant).Distinct().ToList() 
+                                                     }).ToList();
 
                 return Result<List<AllCasesByDayDTO>>.Success(result);
             }
