@@ -1,8 +1,5 @@
 ﻿using Application.Contracts;
-using Application.DailyCases;
 using Application.DailyCases.Queries;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Domain;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -17,12 +14,10 @@ namespace Infrastructure.Repositories
     public class DailyCasesRepository : IDailyCasesRepository
     {
         private readonly DailyCasesReportContext _context;
-        private readonly IMapper _mapper;
 
-        public DailyCasesRepository(DailyCasesReportContext context, IMapper mapper)
+        public DailyCasesRepository(DailyCasesReportContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
         public async Task<List<DateTime>> AvailableDatesAsync()
         {
