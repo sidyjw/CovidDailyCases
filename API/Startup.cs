@@ -2,6 +2,7 @@ using Application.Contracts;
 using Application.Core;
 using Application.DailyCases;
 using Application.DailyCases.Queries;
+using FluentValidation.AspNetCore;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
 using MediatR;
@@ -34,7 +35,10 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(
+                config => config
+                    .RegisterValidatorsFromAssemblyContaining<GetAllCasesAmountByDate.QueryValidator>());
             services.AddDbContext<DailyCasesReportContext>(opt => opt.UseSqlite("Data source=dailyCasesReport.db"));
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddMediatR(typeof(Dates.Handler).Assembly);
