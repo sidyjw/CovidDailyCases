@@ -27,7 +27,7 @@ namespace Application.DailyCases.Queries
             }
             public async Task<List<AllCasesByDayDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _repository.GetAllCasesByDay(request.Date);
+                return await _repository.GetAllCasesByDayAsync(request.Date);
             }
         }
     }

@@ -45,5 +45,14 @@ namespace API.Controllers
             var result = await _mediator.Send(new GetAllCasesByDate.Query { Date = date });
             return Ok(result);
         }
+
+        [HttpGet("/cases/{date}/cumulative")]
+        [ProducesResponseType(typeof(List<AllCasesAmountByDateDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllCasesAmountByDate(string date)
+        {
+            var result = await _mediator.Send(new GetAllCasesAmountByDate.Query { Date = date}); 
+            return Ok(result);
+        }
     }
 }

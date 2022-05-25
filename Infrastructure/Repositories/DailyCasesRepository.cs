@@ -34,7 +34,26 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<AllCasesByDayDTO>> GetAllCasesByDay(DateTime date)
+        public async Task<List<AllCasesAmountByDateDTO>> GetAllCasesAmountByDateAsync(DateTime start, DateTime end)
+        {
+            var query = from cases in await _context.Set<DailyCasesReport>()
+                       .AsNoTracking()
+                       .Where(cases => cases.Date >= start && cases.Date <= end)
+                       .ToListAsync()
+                       group cases by cases.Location
+                       into casesGroup
+                       select new AllCasesAmountByDateDTO { 
+                            Location = casesGroup.Key, 
+                            VariantItems = casesGroup.GroupBy(c => c.Variant)
+                                                        .Select(v => new VariantItem { 
+                                                            Name = v.Key, 
+                                                            Amount = v.Sum(a => a.NumSequences).ToString()})
+                                                        .ToList()
+                        };
+            return query.ToList();
+        }
+
+        public async Task<List<AllCasesByDayDTO>> GetAllCasesByDayAsync(DateTime date)
         {
             var query = from cases in await _context.Set<DailyCasesReport>()
                         .AsNoTracking()
