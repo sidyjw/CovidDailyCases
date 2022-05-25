@@ -47,8 +47,9 @@ namespace Infrastructure.Persistence
         private static string GetCsvRelativePath()
         {
             var currentDirectory = Directory.GetCurrentDirectory();
-            var csvFile = Path.Combine(currentDirectory, @"..\assets\covid-variants.csv");
-            return Path.GetFullPath(csvFile);
+            var csvFile = Path.Combine(currentDirectory, @"../assets/covid-variants.csv");
+            var filePath = csvFile.Replace('/', Path.DirectorySeparatorChar);
+            return Path.GetFullPath(filePath);
         }
 
         private class DailyCasesCsvConfig
