@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -47,8 +48,8 @@ namespace Infrastructure.Persistence
 
         private static string GetCsvRelativePath()
         {
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var csvFile = Path.Combine(currentDirectory, @"../assets/covid-variants.csv");
+            var assemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var csvFile = Path.Combine(assemblyDirectory, @"./Persistence/assets/covid-variants.csv");
             var filePath = csvFile.Replace('/', Path.DirectorySeparatorChar);
             return Path.GetFullPath(filePath);
         }
