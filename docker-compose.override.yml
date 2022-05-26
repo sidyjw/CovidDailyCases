@@ -6,10 +6,23 @@ services:
   environment:
    MYSQL_ROOT_PASSWORD: "dev"
   cap_add:
-      - SYS_NICE  # CAP_SYS_NICE
+      - SYS_NICE  
   ports:
   - "3306:3306"
   volumes:
   - mysqldb:/var/lib/mysql
+
+ api:
+  container_name: api
+  environment:
+   - ASPNETCORE_ENVIRONMENT=Development
+   - "DatabaseSettings:ConnectionString=server=db.mysql;user=root;password=dev;database=DailyCasesReport;"
+  ports:
+  -  "8000:80"
+  depends_on: 
+   db.mysql:
+    condition: service_completed_successfully
+
+ 
 volumes:
   mysqldb:

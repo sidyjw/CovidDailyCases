@@ -1,3 +1,9 @@
 services:
+ api:
+  image: ${DOCKER_REGISTRY-}api
+  build:
+   context: .
+   dockerfile: API/Dockerfile
+
  db.mysql:
   image: mysql:8.0-debian
