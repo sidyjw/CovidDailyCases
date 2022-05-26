@@ -3,11 +3,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from "@chakra-ui/react"
+import { AppStorage } from './state/AppContext';
 
 ReactDOM.render(
-  <ChakraProvider>
-    <App />
-  </ChakraProvider>,
+  <AppStorage>
+    <ChakraProvider>
+      <App />
+    </ChakraProvider>
+  </AppStorage>
+  ,
   document.getElementById('root')
 );
 
