@@ -19,7 +19,11 @@ const rounded = (num: number) => {
   }
 };
 
-const MapChart = ({ setTooltipContent } : {setTooltipContent: React.Dispatch<React.SetStateAction<string>>}) => {
+export interface IMapChartProps {
+  setTooltipContent: (content: string) => void
+}
+
+const MapChart = ({ setTooltipContent } : IMapChartProps) => {
   return (
     <>
       <ComposableMap data-tip="" projectionConfig={{ scale: 200 }}>
@@ -32,7 +36,7 @@ const MapChart = ({ setTooltipContent } : {setTooltipContent: React.Dispatch<Rea
                   geography={geo}
                   onMouseEnter={() => {
                     const { NAME, POP_EST } = geo.properties;
-                    setTooltipContent(`${NAME} — aeeeeeeeee ${rounded(POP_EST)}`);
+                    setTooltipContent(`${NAME} — aeeeeeeeee\nadasdasd<br> \ndasdasdsa ${rounded(POP_EST)}`);
                   }}
                   onMouseLeave={() => {
                     setTooltipContent("");
