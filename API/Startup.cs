@@ -31,7 +31,20 @@ namespace API
                 .AddFluentValidation(
                 config => config
                     .RegisterValidatorsFromAssemblyContaining<GetAllCasesAmountByDate.QueryValidator>());
-            services.AddDbContext<DailyCasesReportContext>(opt => opt.UseSqlite("Data source=dailyCasesReport.db"));
+            
+            services.AddDbContext<DailyCasesReportContext>(opt => {
+                switch(Configuration["DatabaseSettings:DatabaseProvider"])
+                {
+                    case "SQLite":
+                        opt.UseSqlite(Configuration["DatabaseSettings:ConnectionString"]);
+                        break;
+                    case "MySQL":
+                        opt.UseMySql(Configuration["DatabaseSettings:ConnectionString"], new MySqlServerVersion( new System.Version(8,0)));
+                        break;
+                }
+
+            });
+
             services.AddMediatR(typeof(Dates.Handler).Assembly);
             services.AddScoped<IDailyCasesRepository, DailyCasesRepository>();
             services.AddSwaggerGen(c =>

@@ -2,6 +2,7 @@
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace Infrastructure.Persistence
 
                     }
 
-                    await context.SaveChangesAsync();
+                    var result =  await context.SaveChangesAsync();
                 }
 
             }
