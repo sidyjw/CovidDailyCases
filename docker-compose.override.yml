@@ -1,0 +1,15 @@
+services:
+ 
+ db.mysql:
+  container_name: db.mysql
+  restart: always
+  environment:
+   MYSQL_ROOT_PASSWORD: "dev"
+  cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
+  ports:
+  - "3306:3306"
+  volumes:
+  - mysqldb:/var/lib/mysql
+volumes:
+  mysqldb:
