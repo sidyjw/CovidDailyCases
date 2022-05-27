@@ -1,33 +1,40 @@
-import { memo } from "react";
+import { memo, useContext } from "react";
 import {
-  ZoomableGroup,
   ComposableMap,
   Geographies,
-  Geography
+  Geography,
+  Sphere,
+  Graticule
 } from "react-simple-maps";
+import { AppContext } from "../state/AppContext";
 
 const geoUrl =
   "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
-
-const rounded = (num: number) => {
-  if (num > 1000000000) {
-    return Math.round(num / 100000000) / 10 + "Bn";
-  } else if (num > 1000000) {
-    return Math.round(num / 100000) / 10 + "M";
-  } else {
-    return Math.round(num / 100) / 10 + "K";
-  }
-};
 
 export interface IMapChartProps {
   setTooltipContent: (content: string) => void
 }
 
 const MapChart = ({ setTooltipContent } : IMapChartProps) => {
+  const context = useContext(AppContext)
+
+  const currentCountry = (location: string ) => {
+    const country = context?.allCasesAmount && 
+                      context?.allCasesAmount
+                      .find(e => e.location.toLocaleLowerCase().includes(location.toLocaleLowerCase()))
+    return country                     
+  }
+
+  const toolTipStringBuilder = (location: string) => {
+    const country = currentCountry(location)
+    const cases = country?.variantItems && country?.variantItems.map(e => `<div>${e.name}: ${e.amount}</div>`).join().replaceAll(',', ' ')    
+    return cases
+  }
   return (
     <>
-      <ComposableMap data-tip="" projectionConfig={{ scale: 200 }}>
-        <ZoomableGroup>
+      <ComposableMap data-tip="" projectionConfig={{ scale: 150 }}>
+          <Sphere stroke="#E4E5E6" strokeWidth={0.5} id="sphere" fill="none" />
+          <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
               geographies.map(geo => (
@@ -35,12 +42,13 @@ const MapChart = ({ setTooltipContent } : IMapChartProps) => {
                   key={geo.rsmKey}
                   geography={geo}
                   onMouseEnter={() => {
-                    const { NAME, POP_EST } = geo.properties;
-                    setTooltipContent(`${NAME} — aeeeeeeeee\nadasdasd<br> \ndasdasdsa ${rounded(POP_EST)}`);
+                    const { NAME } = geo.properties;
+                    setTooltipContent(`<strong>${NAME}</strong> — ${(context?.allCasesAmount && toolTipStringBuilder(NAME)) ?? 'No information'} `);
                   }}
                   onMouseLeave={() => {
                     setTooltipContent("");
                   }}
+                  
                   style={{
                     default: {
                       fill: "#D6D6DA",
@@ -59,7 +67,7 @@ const MapChart = ({ setTooltipContent } : IMapChartProps) => {
               ))
             }
           </Geographies>
-        </ZoomableGroup>
+        
       </ComposableMap>
     </>
   );

@@ -27,16 +27,16 @@ export const useAvailableDates = () => {
 
 export interface GetAllCasesAmountByDate extends ResponseBase {
     location: string,
-    variants: VariantItems[];
+    variantItems: VariantItems[];
 }
 
-interface VariantItems {
+export interface VariantItems {
     name: string, 
     amount: number
 }
 export const useGetAllCasesAmountByDate = (stringDateInterval: string | null) => {
     
-    const {data, error} = useSWR<GetAllCasesAmountByDate>(stringDateInterval && `${API_BASE}/cases/${stringDateInterval}/cumulative`, fetcher)
+    const {data, error} = useSWR<GetAllCasesAmountByDate[]>(stringDateInterval && `${API_BASE}/cases/${stringDateInterval}/cumulative`, fetcher)
 
     return {
         allCasesAmount: data,
