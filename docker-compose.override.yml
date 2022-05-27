@@ -18,11 +18,16 @@ services:
    - ASPNETCORE_ENVIRONMENT=Development
    - "DatabaseSettings:ConnectionString=server=db.mysql;user=root;password=dev;database=DailyCasesReport;"
   ports:
-  -  "8000:80"
+   - "5000:80"
   depends_on: 
-   db.mysql:
-    condition: service_completed_successfully
-
+   - db.mysql
+ 
+ frontend:
+  container_name: frontend
+  environment:
+    - REACT_APP_API_URL_DEV=api
+  ports:
+    - "3000:3000"  
  
 volumes:
   mysqldb:

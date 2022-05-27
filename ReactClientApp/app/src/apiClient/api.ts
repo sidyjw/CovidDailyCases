@@ -1,9 +1,7 @@
 import useSWR from "swr"
 
-const API_DEV = process.env.REACT_APP_API_URL_DEV
-const API_PROD = process.env.REACT_APP_API_URL_PROD
 
-const API_BASE = process.env.NODE_ENV === "production" ? API_PROD : API_DEV
+const API_BASE = "http://localhost:5000"
 
 interface ResponseBase {
     isLoading: boolean,
