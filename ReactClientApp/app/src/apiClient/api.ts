@@ -1,7 +1,7 @@
 import useSWR from "swr"
 
-
-const API_BASE = "http://localhost:5000"
+const API_BASE = !!(process.env.REACT_APP_API_URL_BASE) 
+? process.env.REACT_APP_API_URL_BASE: "http://localhost:5000"
 
 interface ResponseBase {
     isLoading: boolean,

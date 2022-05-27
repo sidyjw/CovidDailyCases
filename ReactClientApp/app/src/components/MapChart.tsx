@@ -21,7 +21,7 @@ const MapChart = ({ setTooltipContent } : IMapChartProps) => {
   const currentCountry = (location: string ) => {
     const country = context?.allCasesAmount && 
                       context?.allCasesAmount
-                      .find(e => e.location.toLocaleLowerCase().includes(location.toLocaleLowerCase()))
+                      .find(e => location.toLocaleLowerCase().includes(e.location.toLocaleLowerCase()))
     return country                     
   }
 
