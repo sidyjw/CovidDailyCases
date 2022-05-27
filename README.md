@@ -60,8 +60,5 @@ Confira as aplicações nos endereços:
  - **API** -  http://localhost:5000/
  - **Frontend** - http://localhost:3000/
 
-<<<<<<< HEAD
 > This is a challenge by [Coodesh](https://coodesh.com/)
-=======
-> This is a challenge by [Coodesh](https://coodesh.com/)`
->>>>>>> 07df1412ef3f23e4e3c0a3ac91676d649b38b993
+
