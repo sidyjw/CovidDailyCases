@@ -4,6 +4,8 @@
 
 Aplicação feita em .NET e ReactJS, que exibe em um mapa-múndi, a quantidade de casos de COVID e suas variantes.
 
+Link para a [apresentação do projeto](https://www.loom.com/embed/77b149494e6d4e71a0ca980cd492099e).
+
 ## Tecnologias usadas
 
 ### Backend
@@ -59,6 +61,7 @@ Confira as aplicações nos endereços:
 
  - **API** -  http://localhost:5000/
  - **Frontend** - http://localhost:3000/
+ - **Deploy do Frontend na Vercel** - https://covid-daily-cases.vercel.app/
 
 > This is a challenge by [Coodesh](https://coodesh.com/)
 
